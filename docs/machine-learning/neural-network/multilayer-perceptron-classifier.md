@@ -79,6 +79,24 @@ $mlp->predict([[1, 1, 1, 1], [0, 0, 0, 0]]);
 
 ```
 
+## Save / load training
+
+To save a trained MLP into a file: 
+
+```
+$mlp->train(...);
+$mlp->saveTrainingIntoJsonFile("training.json");
+```
+To load an existing training from a file: 
+
+```
+$mlp = new MLPClassifier(...);
+$mlp->loadTrainingFromJsonFile("training.json");
+$mlp->predict(...);
+```
+
+Keep in mind that you cannot load a trained file in a MLP with different number of layers and/or neurons than in the original MLP. 
+
 ## Activation Functions
 
 * BinaryStep

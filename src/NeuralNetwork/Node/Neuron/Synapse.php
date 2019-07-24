@@ -37,6 +37,11 @@ class Synapse
         $this->weight += $delta;
     }
 
+    public function setWeight(float $weight): void
+    {
+        $this->weight = $weight;
+    }
+
     public function getWeight(): float
     {
         return $this->weight;

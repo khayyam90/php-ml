@@ -41,6 +41,36 @@ class Layer
         return $this->nodes;
     }
 
+    public function getTrainedCharacteristics(): array
+    {
+        $result = [];
+        foreach ($this->nodes as $node) {
+            if ($node instanceof Neuron) {
+                $result[] = $node->getTrainedCharacteristics();
+            }
+        }
+
+        return $result;
+    }
+
+    public function setTrainedCharacteristics(array $characteristics): void
+    {
+        // iterate over the node instances
+        $iNode = -1;
+        for ($i = 0; $i < count($this->nodes); $i++) {
+            $node = $this->nodes[$i];
+            if ($node instanceof Neuron) {
+                $iNode ++;
+
+                if (count($characteristics) < $iNode + 1) {
+                    throw new InvalidArgumentException('Loaded weights should match the layer structure ');
+                }
+
+                $node->setTrainedCharacteristics($characteristics[$iNode]);
+            }
+        }
+    }
+
     private function createNode(string $nodeClass, ?ActivationFunction $activationFunction = null): Node
     {
         if ($nodeClass === Neuron::class) {

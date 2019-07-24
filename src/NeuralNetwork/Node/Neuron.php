@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Phpml\NeuralNetwork\Node;
 
+use Phpml\Exception\InvalidArgumentException;
 use Phpml\NeuralNetwork\ActivationFunction;
 use Phpml\NeuralNetwork\ActivationFunction\Sigmoid;
 use Phpml\NeuralNetwork\Node;
@@ -72,5 +73,27 @@ class Neuron implements Node
     {
         $this->output = 0.0;
         $this->z = 0.0;
+    }
+
+    public function getTrainedCharacteristics(): array
+    {
+        $result = [];
+        foreach ($this->synapses as $synapse) {
+            $result[] = $synapse->getWeight();
+        }
+
+        return $result;
+    }
+
+    public function setTrainedCharacteristics(array $characteristics): void
+    {
+        // length of weights should equals number of synapses
+        if (count($characteristics) != count($this->synapses)) {
+            throw new InvalidArgumentException('Loaded weights should match the neuron structure');
+        }
+
+        for ($i = 0; $i < count($characteristics); $i++) {
+            $this->synapses[$i]->setWeight($characteristics[$i]);
+        }
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Phpml\NeuralNetwork\Network;
 
+use Phpml\Exception\InvalidArgumentException;
 use Phpml\NeuralNetwork\Layer;
 use Phpml\NeuralNetwork\Network;
 use Phpml\NeuralNetwork\Node\Input;
@@ -71,5 +72,26 @@ abstract class LayeredNetwork implements Network
         }
 
         return $this;
+    }
+
+    public function getTrainedCharacteristics(): array
+    {
+        $result = [];
+        foreach ($this->layers as $layer) {
+            $result[] = $layer->getTrainedCharacteristics();
+        }
+
+        return $result;
+    }
+
+    public function setTrainedCharacteristics(array $characteristics): void
+    {
+        if (count($characteristics) != count($this->layers)) {
+            throw new InvalidArgumentException('Loaded data does not match the network structure');
+        }
+
+        for ($i = 0; $i < count($this->layers); $i++) {
+            $this->layers[$i]->setTrainedCharacteristics($characteristics[$i]);
+        }
     }
 }

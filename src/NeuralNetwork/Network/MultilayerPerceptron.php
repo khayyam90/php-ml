@@ -139,6 +139,26 @@ abstract class MultilayerPerceptron extends LayeredNetwork implements Estimator,
         return $this->backpropagation;
     }
 
+    public function saveTrainingIntoJsonFile(string $filename): void
+    {
+        $characteristics = $this->getTrainedCharacteristics();
+        file_put_contents($filename, json_encode($characteristics));
+    }
+
+    public function loadTrainingFromJsonFile(string $filename): void
+    {
+        if (!file_exists($filename)) {
+            throw new InvalidArgumentException('File does not exist, it cannot be loaded');
+        }
+        $characteristics = file_get_contents($filename);
+        if ($characteristics !== false) {
+            $characteristics = json_decode($characteristics, true);
+            $this->setTrainedCharacteristics($characteristics);
+        } else {
+            throw new InvalidArgumentException('Training file could not be loaded');
+        }
+    }
+
     /**
      * @param mixed $target
      */
