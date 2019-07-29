@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Phpml\NeuralNetwork;
 
+use Phpml\Exception\BadNeuralNetworkStructureException;
 use Phpml\Exception\InvalidArgumentException;
 use Phpml\NeuralNetwork\Node\Neuron;
 
@@ -63,7 +64,7 @@ class Layer
                 $iNode ++;
 
                 if (count($characteristics) < $iNode + 1) {
-                    throw new InvalidArgumentException('Loaded weights should match the layer structure ');
+                    throw new BadNeuralNetworkStructureException();
                 }
 
                 $node->setTrainedCharacteristics($characteristics[$iNode]);
